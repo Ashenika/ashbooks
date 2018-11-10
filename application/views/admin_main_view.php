@@ -40,16 +40,20 @@
         <ul>
             <li><a href="#" class="activ">
                     <span class="nav-icon"><i class="fa fa-tachometer" aria-hidden="true"></i></span>
-                    <span class="remove_text">Dashboard</span></a></li>
-            <li><a href="<?php echo base_url(); ?>index.php/AdminController/addCategory">
+                    <span class="remove_text">Dashboard</span></a>
+            </li>
+            <li><a href="<?php echo base_url(); ?>index.php/AdminController/addCategoryView">
                     <span class="nav-icon"><i class="fa fa-inbox" aria-hidden="true"></i></span>
-                    <span class="remove_text"> Add Category</span></a></li>
-            <li><a href="<?php echo base_url(); ?>index.php/AdminController/addBook">
+                    <span class="remove_text"> Add Category</span></a>
+            </li>
+            <li><a href="<?php echo base_url(); ?>index.php/AdminController/addBookView">
                     <span class="nav-icon"><i class="fa fa-book" aria-hidden="true"></i></span>
-                    <span class="remove_text"> Add Book</span></a></li>
+                    <span class="remove_text"> Add Book</span></a>
+            </li>
             <li><a href="<?php echo base_url(); ?>index.php/AdminController/viewBookList">
                     <span class="nav-icon"><i class="fa fa-bookmark" aria-hidden="true"></i></span>
-                    <span class="remove_text"> Book List</span></a></li>
+                    <span class="remove_text"> Book List</span></a>
+            </li>
         </ul>
     </aside>
 <!--    <section id="content_body">-->

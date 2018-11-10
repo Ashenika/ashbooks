@@ -9,26 +9,35 @@ include("index_view.php");
 include ("header.php");
 ?>
 <html>
+
+<style>
+    .card-body {
+        position: relative;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .card-body img-sm {vertical-align: middle;}
+
+    .card-body .heading {
+        position: absolute;
+        bottom: 0;
+        background: rgb(0, 0, 0); /* Fallback color */
+        background: rgba(0, 0, 0, 0.5); /* Black background with 0.5 opacity */
+        color: #f1f1f1;
+        width: 85%;
+        padding: 20px;
+    }
+</style>
+
     <!-- ========================= SECTION MAIN ========================= -->
     <section class="section-main bg padding-y-sm">
         <div class="container">
             <div class="card">
                 <div class="card-body">
                     <div class="row row-sm">
-                        <aside class="col-md-6-24">
-                            <h5 class="text-uppercase">Book Categories</h5>
-                            <ul class="menu-category list-dots">
-                                <li> <a href="#">Novels </a></li>
-                                <br>
-                                <li> <a href="#">Science Fictions and Fantasy</a></li>
-                                <br>
-                                <li> <a href="#">Short Stories and Anthologies</a></li>
-                                <br>
-                                <li> <a href="#">Education  </a></li>
-                            </ul>
 
-                        </aside> <!-- col.// -->
-                        <div class="col-md-12-24">
+                        <div class="col-md-18-24">
 
                             <!-- ================= main slide ================= -->
                             <div class="owl-init slider-main owl-carousel" data-items="1" data-nav="true" data-dots="false">
@@ -70,7 +79,7 @@ include ("header.php");
         <div class="container">
 
             <header class="section-heading heading-line">
-                <h4 class="title-section bg">MACHINERY</h4>
+                <h4 class="title-section bg">BOOK CATEGORIES</h4>
             </header>
 
             <div class="card ">
@@ -82,7 +91,7 @@ include ("header.php");
                                 <h5 class="title">Books come in many Types</h5>
                                 <p>Some books are to read, some books you enjoy
                                     but some books just swallow you up Heart and Soul. It`s Love from Within make your choice.. </p>
-                                <a href="<?php echo base_url(); ?>index.php/ItemsListController/index" class="btn btn-warning">Explore Books</a>
+                                <a href="<?php echo base_url(); ?>index.php/ItemsListController/viewAllBooks" class="btn btn-warning">Explore Books</a>
                                 <a href="<?php echo base_url(); ?>index.php/AdminController/index" class="btn btn-warning">Admin Test</a>
                             </div>
                         </article>
@@ -90,65 +99,19 @@ include ("header.php");
                     </div> <!-- col.// -->
                     <div class="col-md-9">
                         <ul class="row no-gutters border-cols">
+                        <?php foreach($categories as $key=>$value){?>
                             <li class="col-6 col-md-3">
-                                <a href="#" class="itembox">
+                                <a href="<?php echo base_url(); ?>index.php/HomeController/viewAllByCategory/<?php echo $value->id;?>" class="itembox">
                                     <div class="card-body">
-                                        <p class="word-limit">Novels  </p>
-                                        <img class="img-sm" src="<?php echo base_url(); ?>assets/images/items/1.jpg">
+                                        <p class="word-limit"><?php echo $value->name;?> </p>
+                                        <img class="img-sm" src="<?php echo base_url(); ?>assets/images/banners/bookCategory.jpg" style="width:100%;">
+                                        <p class="heading"><?php echo $value->name;?>  </p>
                                     </div>
                                 </a>
                             </li>
-                            <li class="col-6 col-md-3">
-                                <a href="#" class="itembox">
-                                    <div class="card-body">
-                                        <p class="word-limit">Science Fictions and Fantasy</p>
-                                        <img class="img-sm" src="<?php echo base_url(); ?>assets/images/items/2.jpg">
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="col-6 col-md-3">
-                                <a href="#" class="itembox">
-                                    <div class="card-body">
-                                        <p class="word-limit">Short Stories and Anthologies</p>
-                                        <img class="img-sm" src="<?php echo base_url(); ?>assets/images/items/4.jpg">
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="col-6 col-md-3">
-                                <a href="#" class="itembox">
-                                    <div class="card-body">
-                                        <p class="word-limit">Education </p>
-                                        <img class="img-sm" src="<?php echo base_url(); ?>assets/images/items/5.jpg">
-                                    </div>
-                                </a>
-                            </li>
+                        <?php } ?>
                         </ul>
-                        <ul class="row no-gutters border-cols">
-                            <li class="col-6 col-md-3">
-                                <a href="#" class="itembox">
-                                    <div class="card-body">
-                                        <p class="word-limit">Romantic Fictions</p>
-                                        <img class="img-sm" src="<?php echo base_url(); ?>assets/images/items/6.jpg">
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="col-6 col-md-3">
-                                <a href="#" class="itembox">
-                                    <div class="card-body">
-                                        <p class="word-limit">Language</p>
-                                        <img class="img-sm" src="<?php echo base_url(); ?>assets/images/items/7.jpg">
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="col-6 col-md-3">
-                                <a href="#" class="itembox">
-                                    <div class="card-body">
-                                        <p class="word-limit">Kids</p>
-                                        <img class="img-sm" src="<?php echo base_url(); ?>assets/images/items/8.jpg">
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
+
                     </div> <!-- col.// -->
                 </div> <!-- row.// -->
 

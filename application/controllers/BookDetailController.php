@@ -24,9 +24,29 @@ class BookDetailController extends CI_Controller {
      * map to /index.php/welcome/<method_name>
      * @see https://codeigniter.com/user_guide/general/urls.html
      */
+
+    public function __construct(){
+        parent::__construct();
+        $this->load->library('auth_lib');
+        $this->load->library('session');
+        $this->load->library('pagination');
+        $this->load->helper('url');
+        $this->load->helper('form');
+        $this->load->model('category');
+        $this->load->model('admin');
+        $this->load->model('book');
+        $this->load->model('bookImage');
+        $this->load->helper(array('form', 'url'));
+    }
+
     public function index()
     {
         $this->load->view('book_detail_view');
+    }
+
+    public function viewBookDetail($id){
+        $this->data['details'] = $this->book->bookDetail($id);
+        $this->load->view('book_detail_view',$this->data);
     }
 
 

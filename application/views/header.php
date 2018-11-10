@@ -5,7 +5,7 @@
             <div class="row-sm align-items-center">
                 <div class="col-lg-4-24 col-sm-3">
                     <div class="container">
-                        <a class="navbar-brand" href="#"><img class="logo" src="<?php echo base_url(); ?>assets/images/logos/logoBook.png" alt="" title="AshBooks"></a>
+                        <a class="navbar-brand" href="<?php echo base_url(); ?>index.php/HomeController/index"><img class="logo" src="<?php echo base_url(); ?>assets/images/logos/logoBook.png" alt="" title="AshBooks"></a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTop" aria-controls="navbarTop" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
@@ -62,11 +62,11 @@
                             </div>  <!-- widget-header .// -->
                         </div> <!-- col.// -->
                         <div class="col-auto">
-                            <a href="<?php echo base_url(); ?>index.php/HomeController/shoppingCart" class="widget-header">
+                            <a href="<?php echo base_url(); ?>index.php/ShoppingCartController/viewShoppingCart" class="widget-header">
                                 <div class="icontext">
                                     <div class="icon-wrap"><i class="text-primary icon-sm fa fa-shopping-cart"></i></div>
                                     <div class="text-wrap text-dark">
-                                        <span class="small round badge badge-secondary">0</span>
+                                        <span class="small round badge badge-secondary" name="count"></span>
                                         <div>Shopping <br> Cart</div>
                                     </div>
                                 </div>

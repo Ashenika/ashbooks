@@ -18,7 +18,7 @@ include ("admin_main_view.php");
             <div class="col-md-12">
             <h3 class="box-title">Add Category</h3>
                 <br>
-                <form action="" class="form-horizontal" method="post" enctype="multipart/form-data">
+                <form action="<?php echo base_url(); ?>/index.php/AdminController/addCategory" class="form-horizontal" method="post" enctype="multipart/form-data">
                     <div class="form-group @if($errors->has('amount')) has-error @endif">
                         <label for="" class="col-sm-2 control-label">Category Name</label>
                         <div class="col-sm-6">
