@@ -148,7 +148,7 @@ class AdminController extends CI_Controller{
        redirect('AdminController/addBookView', 'refresh');
     }
 
-    private function upload_files( $title, $files)
+   private function upload_files( $title, $files)
     {
         $config = array(
             'upload_path'   => './uploads/',

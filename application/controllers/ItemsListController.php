@@ -47,6 +47,9 @@ class ItemsListController extends CI_Controller {
     }
 
     public function viewAllBooks(){
+
+        $field  = $this->input->post('category');
+
         // $config['base_url'] = base_url() . 'index.php/HomeController/viewAllByCategory/'.$category_id;
         // $config['total_rows'] = $this->category->record_count();;
         //$config['per_page'] = 12;
@@ -72,13 +75,27 @@ class ItemsListController extends CI_Controller {
             $page = 1;
         }
 
+        if (isset($filter) && !empty($search)) {
+            $this->load->model('book');
+            $data['details'] = $this->book->getBooksFilters($field);
+        } else {
+            $this->load->model('book');
+            $data['details'] = $this->book->getBooks();
+        }
         // build paging links
-        $data['details'] = $this->book->getBooks();
+
         $params          = $this->pagination->create_links();
         $data["links"]   = explode('&nbsp;',$params );
+        $data['category'] = $this->category->getBookCategoriesFilter();
 
+        $aa=array($data);
+
+//        print_r(json_encode($data));
+//        return;
         $this->load->view('all_books_view',$data);
     }
+
+
 
 }
 

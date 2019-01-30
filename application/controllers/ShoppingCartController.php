@@ -46,60 +46,88 @@ class ShoppingCartController extends CI_Controller {
 
 
     public function viewShoppingCart(){
-        $cart_session = $this->session->userdata('cart_session');
-       // $this->data['cart_session'] = $cart_session;
-        $data = array(
-            'items'  =>  $cart_session,
-        );
-        print_r(json_encode($data));
-        return;
-        $this->load->view('shopping_cart',$data);
+        if(!isset($_SESSION['cart'])){
+            $_SESSION['cart'] = session_id();
+           // print_r(session_id());
+        }
+
+        $sess = session_id();
+        //$rowId = null;
+//        foreach ($this->cart->contents() as $val){
+//            $rowId  = $val['rowid'];
+//        }
+      //  echo json_encode($this->cart->contents());
+
+        $this->data['cart']  = $this->shoppingCart->getShoppingCartDetails($sess);
+       // $this->data['row']   = $rowId;
+       // echo $rowId;
+      // echo json_encode($this->data);
+       // print_r($sess);
+        //return;
+      //  die;
+        $this->load->view('shopping_cart', $this->data);
     }
 
-    public function addToCart($id){
-        $qty = $this->input->post('quantity');
-       // $id  = $this->input->post('bookid');
+    public function addToCart(){
+        $qty    = $this->input->post('quantity');
+        $id     = $this->input->post('bookid');
+        $price  = $this->input->post('price');
+        $title  = $this->input->post('title');
 
         $cart_data=$this->shoppingCart->getCartProduct($id);
-        foreach ($cart_data as $val){
-            $item = array(
-                'id'         => $val->id,
-                'isbn_no'    => $val->isbn_no,
-                'title'      => $val->title,
-                'file_path'  => $val->file_path,
-                'price'      => $val->price,
-                'quantity'   => $qty
+
+        $data = array(
+            'id'      => $id,
+            'qty'     => $qty,
+            'price'   => $price,
+            'name'    => $title
+        );
+
+        $this->cart->insert($data);
+
+
+
+        foreach ($this->cart->contents() as $items){
+           print_r( json_encode($items));
+            $cid = $items['id'];
+
+            $data = array(
+                'book_id'    => $cid,
+                'quantity'   => $items['qty'],
+                'session_id' => $items['rowid'],
+                'total'      => $items['subtotal'],
+                'timestamp'  => date('Y-m-d H:i:s'),
+                'user_id'    => session_id()
             );
-        }
-
-        if($this->session->userdata('cart_session')){
-
-            $cart_session = $this->session->userdata('cart_session');
-
-            foreach($cart_session as $id=>$val){
-                $product_cart[$id] = $val;
-            }
-
+            $this->shoppingCart->insertToShoppingCart($data);
 
         }
-
-        if($this->input->post('quantity')){
-            $qty_add = $this->input->post('quantity');
-        } else {
-            $qty_add = 1;
-        }
-
-        $product_cart[$this->input->post('product_id')] = $qty_add;
-        $this->session->set_userdata('cart_session',$item);
-
-        $cart_session = $this->session->userdata('cart_session');
-
-//        $data = array(
-//            'status' => 'Success',
-//            'items'  =>  $cart_session,
-//            'count'  =>$this->cart->total_items(),
-//        );
-        return $cart_session;
     }
+
+
+    public function emptyCart(){
+        $this->cart->destroy();
+        redirect('HomeController/index');
+    }
+
+    function removeCartItem($rowid) {
+
+        $user_id = session_id();
+        $item = $this->shoppingCart->getRemoveItem($user_id,$rowid);
+     //   echo json_encode($item);
+
+        $data = array(
+            'rowid'   => $rowid,
+            'qty'     => 0
+        );
+
+        $this->cart->update($data);
+        $this->shoppingCart->remove($rowid);
+
+       redirect('ShoppingCartController/viewShoppingCart',$rowid);
+    }
+
+
+
 
 }

@@ -1,4 +1,5 @@
 <html lang="en">
+
 <header class="section-header">
     <section class="header-main shadow-sm">
         <div class="container">
@@ -12,23 +13,7 @@
                     </div>
                 </div>
                 <div class="col-lg-11-24 col-sm-10">
-                    <form action="#" class="py-1">
-                        <div class="input-group w-100">
-                            <select class="custom-select"  name="category_name">
-                                <option value="">All</option>
-                                <option value="">Novels</option>
-                                <option value="">Science Fictions and Fantasy</option>
-                                <option value="">Short Stories and Anthologies</option>
-                                <option value="">Education</option>
-                            </select>
-                            <input type="text" class="form-control" style="width:50%;" placeholder="Search">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">
-                                    <i class="fa fa-search"></i> Search
-                                </button>
-                            </div>
-                        </div>
-                    </form> <!-- search-wrap .end// -->
+
                 </div> <!-- col.// -->
                 <div class="col-lg-9-24 col-sm-12">
                     <div class="widgets-wrap float-right row no-gutters py-1">
@@ -66,7 +51,9 @@
                                 <div class="icontext">
                                     <div class="icon-wrap"><i class="text-primary icon-sm fa fa-shopping-cart"></i></div>
                                     <div class="text-wrap text-dark">
-                                        <span class="small round badge badge-secondary" name="count"></span>
+                                        <span class="small round badge badge-secondary" name="count">
+                                            <?= $this->cart->total_items() ?>
+                                        </span>
                                         <div>Shopping <br> Cart</div>
                                     </div>
                                 </div>

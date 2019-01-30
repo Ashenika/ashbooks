@@ -43,11 +43,17 @@ class HomeController extends CI_Controller {
     public function index(){
 
         $this->data['categories'] = $this->category->getAllBookCategories();
-        //print_r($this->data);
+        if(!isset($_SESSION['id'])){
+            $_SESSION['id']=uniqid();
+        }
+       // echo $_SESSION['id'];
+       // $uid = uniqid();
+       // print_r($_SESSION['id']);
         $this->load->view('home_view',$this->data);
     }
 
     public function shoppingCart(){
+
         $this->load->view('shopping_cart');
     }
 
@@ -87,4 +93,5 @@ class HomeController extends CI_Controller {
 
         $this->load->view('all_books_category_view',$data);
     }
+
 }

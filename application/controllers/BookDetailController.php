@@ -45,10 +45,28 @@ class BookDetailController extends CI_Controller {
     }
 
     public function viewBookDetail($id){
+
+        $session_id = $this->session->userdata('session_id');
         $this->data['details'] = $this->book->bookDetail($id);
+        if(!isset($_SESSION['id'])){
+            $_SESSION['id']=uniqid();
+        }
+        $user = array(
+            'unique_user_id' => $_SESSION['id'],
+            'book_id'        => $id,
+            'timestamp'      => date('Y-m-d H:i:s')
+        );
+        $this->book->insertToUser($user);
+        $this->getViewedBooks($id);
         $this->load->view('book_detail_view',$this->data);
     }
 
+    public function getViewedBooks($id){
+        //$id =  $_SESSION['id'];
+        $this->data['top_books'] = $this->book->getTopViewedBooks($id);
+      // print_r(json_encode($this->data));
+        return $this->data;
+    }
 
 
 }

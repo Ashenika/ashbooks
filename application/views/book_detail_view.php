@@ -9,9 +9,37 @@
 include("index_view.php");
 include ("header.php");
 ?>
+<script type="text/javascript">
+    function myFunction() {
+
+        var bookid       = document.getElementById('bookid').value ;
+        var quantity     = document.getElementById('quantity').value;
+        var price        = document.getElementById('price').value;
+        var title        = document.getElementById('title').value;
 
 
-<span class="count"><?= $this->cart->total_items() ?></span>
+        $.ajax({
+            url: "<?php echo site_url('ShoppingCartController/addToCart');?>",
+            method: "POST",
+            data: {
+                bookid  : bookid,
+                quantity: quantity,
+                price   : price,
+                title   : title
+            },
+            success: function(data) {
+                $('.count').html(data.count);
+//                location.reload();
+                console.log(data);
+            }
+//                    success: function (data) {
+//                        $('#detail_cart').html(data);
+//                    }
+        });
+    }
+
+</script>
+
 <!-- ========================= SECTION CONTENT ========================= -->
 <section class="section-content bg padding-y-sm">
     <div class="container">
@@ -76,20 +104,27 @@ include ("header.php");
                                     </ul>
                                 </div> <!-- rating-wrap.// -->
                                 <hr>
+
+
                                 <div class="row">
                                     <div class="col-sm-5">
                                         <dl class="dlist-inline">
                                             <dt>Quantity: </dt>
                                             <dd>
-                                                <input type="number" name="quantity" value="1" class="quantity form-control">
+                                                <input type="number" name="quantity" id="quantity"   class="quantity form-control">
                                             </dd>
                                         </dl>  <!-- item-property .// -->
                                     </div> <!-- col.// -->
                                 </div> <!-- row.// -->
                                 <hr>
-                                <a href="<?php echo site_url('ShoppingCartController/addToCart/'.$value->id); ?>">Buy Now</a>
-                                <button class="add_cart btn btn-success">Add To Cart  </button>
+                                <input type="hidden" value="<?php echo $value->id;?>" name="bookid"  id="bookid" >
+                                <input type="hidden" value="<?php echo $value->price;?>" name="price"  id="price" >
+                                <input type="hidden" value="<?php echo $value->title;?>" name="title"  id="title" >
+                                <input type="hidden" value="<?php echo $value->file_path;?>" name="image"  id="image" >
+                                <button class="btn btn-success" name="add_cart" onclick="myFunction();">Add To Cart  </button>
+                                <a href="<?php echo base_url(); ?>index.php/ItemsListController/viewAllBooks" class="btn  btn-info">Continue Shopping </a>
                                 <!-- short-info-wrap .// -->
+
                             </article> <!-- card-body.// -->
                         </aside> <!-- col.// -->
                     </div> <!-- row.// -->
@@ -106,28 +141,24 @@ include ("header.php");
                         The People who viewed this book also viewed
                     </div>
                     <div class="card-body row">
+                        <?php foreach($top_books as $key=>$value){?>
                         <div class="col-xl-2 col-md-3 col-sm-12">
                             <figure class="item border-bottom mb-3">
-                                <a href="#" class="img-wrap"> <img src="<?php echo base_url(); ?>assets/images/items/2.jpg" class="img-md"></a>
+                                <a href="#" class="img-wrap"> <img src="<?php echo base_url(); ?><?php echo $value->file_path;?>" class="img-md"></a>
                                 <figcaption class="info-wrap">
-                                    <a href="#" class="title">The name of product</a>
+                                    <a href="<?php echo base_url(); ?>index.php/BookDetailController/viewBookDetail/<?php echo $value->id;?>" class="title"><?php echo $value->title;?></a>
                                     <div class="price-wrap mb-3">
-                                        <span class="price-new">$280</span>
+                                        <span class="price-new">LKR<?php echo $value->price;?></span>
                                     </div> <!-- price-wrap.// -->
                                 </figcaption>
                             </figure> <!-- card-product // -->
                         </div> <!-- col.// -->
+                        <?php } ?>
                     </div> <!-- card-body.// -->
                 </div> <!-- card.// -->
             </aside> <!-- col // -->
         </div> <!-- row.// -->
     </div><!-- container // -->
-
-    <script>
-        $(document).ready(function() {
-
-        });
-    </script>
 
 </section>
 <!-- ========================= SECTION CONTENT .END// ========================= -->

@@ -30,6 +30,18 @@ class Category extends CI_Model {
         return $category;
     }
 
+    public function getBookCategoriesFilter(){
+        $result = $this->db->select('id, name')->get('category')->result_array();
+
+        $category = array();
+        $category[''] = '--Filters--';
+        foreach ($result as $r) {
+            $category[$r['id']] = $r['name'];
+        }
+
+        return $category;
+    }
+
     public function getAllBookCategories(){
         $this->db->select('id,name')->from('category');
         $query = $this->db->get();
