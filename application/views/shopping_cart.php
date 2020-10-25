@@ -131,7 +131,7 @@ include("header.php");
                         <a href="<?php echo base_url(); ?>index.php/HomeController/index" class="btn  btn-danger">Go Back </a>
                     </div>
                     <div class="itemside mb-1">
-                        <a href="#" class="btn  btn-success">Proceed Checkout </a>
+                        <a href="https://www.paypal.com/us/signin" class="btn  btn-success">Proceed Checkout </a>
                     </div>
                 </div>
 

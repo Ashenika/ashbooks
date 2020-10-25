@@ -48,50 +48,30 @@ class ItemsListController extends CI_Controller {
 
     public function viewAllBooks(){
 
-        $field  = $this->input->post('category');
+        $field  = $this->input->get('category');
+        $search = $this->input->get('search');
 
-        // $config['base_url'] = base_url() . 'index.php/HomeController/viewAllByCategory/'.$category_id;
-        // $config['total_rows'] = $this->category->record_count();;
-        //$config['per_page'] = 12;
-        // $config["uri_segment"] = 3;
+
         $config = array();
-        $config["base_url"] = base_url() . 'index.php/ItemsListController/viewAllBooks/';
-        $total_row = $this->category->record_count();
-        $config["total_rows"] = $total_row;
-        $config["per_page"] = 12;
-        $config['use_page_numbers'] = TRUE;
-        $config['num_links'] = $total_row;
-        $config['cur_tag_open'] = '&nbsp;<a class="current">';
+        $config["base_url"]     = base_url() . 'index.php/ItemsListController/viewAllBooks/';
+        $config["total_rows"]   = $this->category->record_count();
+        $config["per_page"]     = 10;
+        $config["uri_segment"]  = 2;
+        $config['first_link']   = 'First Page';
+        $config['last_link']    = 'Last Page';
+        $config['cur_tag_open'] = '<a class="active">';
         $config['cur_tag_close'] = '</a>';
-        $config['next_link'] = '>';
-        $config['prev_link'] = '<';
 
 
         $this->pagination->initialize($config);
-        if($this->uri->segment(3)){
-            $page = ($this->uri->segment(3)) ;
-        }
-        else{
-            $page = 1;
-        }
+        $page = ($this->uri->segment(2)) ? $this->uri->segment(2) : 0;
 
-        if (isset($filter) && !empty($search)) {
-            $this->load->model('book');
-            $data['details'] = $this->book->getBooksFilters($field);
-        } else {
-            $this->load->model('book');
-            $data['details'] = $this->book->getBooks();
-        }
+
         // build paging links
+        $data["links"] = $this->pagination->create_links();
+        $data['books'] = $this->book->getBooks($search,$field, $config["per_page"], $page);
+        $data['categories'] = $this->category->getBookCategoriesFilter();
 
-        $params          = $this->pagination->create_links();
-        $data["links"]   = explode('&nbsp;',$params );
-        $data['category'] = $this->category->getBookCategoriesFilter();
-
-        $aa=array($data);
-
-//        print_r(json_encode($data));
-//        return;
         $this->load->view('all_books_view',$data);
     }
 

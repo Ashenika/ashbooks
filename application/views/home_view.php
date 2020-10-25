@@ -92,7 +92,7 @@ include ("header.php");
                                 <p>Some books are to read, some books you enjoy
                                     but some books just swallow you up Heart and Soul. It`s Love from Within make your choice.. </p>
                                 <a href="<?php echo base_url(); ?>index.php/ItemsListController/viewAllBooks" class="btn btn-warning">Explore Books</a>
-                                <a href="<?php echo base_url(); ?>index.php/AdminController/index" class="btn btn-warning">Admin Test</a>
+<!--                                <a href="--><?php //echo base_url(); ?><!--index.php/AdminController/index" class="btn btn-warning">Admin Test</a>-->
                             </div>
                         </article>
 

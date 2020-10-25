@@ -48,23 +48,12 @@ class ShoppingCartController extends CI_Controller {
     public function viewShoppingCart(){
         if(!isset($_SESSION['cart'])){
             $_SESSION['cart'] = session_id();
-           // print_r(session_id());
         }
 
         $sess = session_id();
-        //$rowId = null;
-//        foreach ($this->cart->contents() as $val){
-//            $rowId  = $val['rowid'];
-//        }
-      //  echo json_encode($this->cart->contents());
 
         $this->data['cart']  = $this->shoppingCart->getShoppingCartDetails($sess);
-       // $this->data['row']   = $rowId;
-       // echo $rowId;
-      // echo json_encode($this->data);
-       // print_r($sess);
-        //return;
-      //  die;
+
         $this->load->view('shopping_cart', $this->data);
     }
 
@@ -114,7 +103,6 @@ class ShoppingCartController extends CI_Controller {
 
         $user_id = session_id();
         $item = $this->shoppingCart->getRemoveItem($user_id,$rowid);
-     //   echo json_encode($item);
 
         $data = array(
             'rowid'   => $rowid,

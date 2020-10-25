@@ -23,22 +23,32 @@
     <script src="https://use.fontawesome.com/10a964325b.js"></script>
 </head>
 
+<style>
+    #logout{
+        float: right;
+        margin-right: -340%;
+        color: white;
+        font-size: x-large;
+    }
+</style>
 
 <body>
 <!--////////////////TOP NAVBAR FIXED NAVBAR////////////////-->
 <div class="main-container">
-    <nav class="navbar navbar-fixed-top admin-navbar">
+    <nav class="navbar navbar-fixed-top admin-navbar" id="navbar_top">
         <div class="container-fluid">
             <div class="navbar-header" style="display: inline-block;">
                 <button id="menu_icon"><i class="fa fa-bars" aria-hidden="true"></i></button>
                 <a href="index.html" class="admin-chat-logo"><img src="<?php echo base_url(); ?>assets/images/logos/logoAdmin.png"></a>
+                <a href="<?php echo base_url(); ?>index.php/AdminController/logout"
+                   class="btn" id="logout" type="button"><i class="fa fa-power-off" aria-hidden="true"></i></a>
             </div>
         </div>
     </nav>
 
     <aside class="hit_sidebar open_sidbar sidebar-slide-push">
         <ul>
-            <li><a href="#" class="activ">
+            <li><a href="<?php echo base_url(); ?>index.php/AdminController/dashboard" class="activ">
                     <span class="nav-icon"><i class="fa fa-tachometer" aria-hidden="true"></i></span>
                     <span class="remove_text">Dashboard</span></a>
             </li>
@@ -56,15 +66,9 @@
             </li>
         </ul>
     </aside>
-<!--    <section id="content_body">-->
-<!--        <div class="container">-->
-<!--            <div class="row">-->
-<!--                <div class="col-md-4"><h1>OUR BUSINESS ENGAGEMENTS</h1></div>-->
-<!--                <div class="col-md-4"><h1>OUR BUSINESS ENGAGEMENTS</h1></div>-->
-<!--                <div class="col-md-4"><h1>OUR BUSINESS ENGAGEMENTS</h1></div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </section>-->
+    <section id="content_body" class="content_body">
+
+    </section>
 
 
 

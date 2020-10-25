@@ -62,9 +62,9 @@ class BookDetailController extends CI_Controller {
     }
 
     public function getViewedBooks($id){
-        //$id =  $_SESSION['id'];
+
         $this->data['top_books'] = $this->book->getTopViewedBooks($id);
-      // print_r(json_encode($this->data));
+
         return $this->data;
     }
 

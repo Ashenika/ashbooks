@@ -60,11 +60,11 @@
                             </a>
                         </div> <!-- col.// -->
                         <div class="col-auto">
-                            <a href="#" class="widget-header">
+                            <a href="<?php echo base_url(); ?>index.php/HomeController/contact" class="widget-header">
                                 <div class="icontext">
-                                    <div class="icon-wrap"><i class="text-primary icon-sm  fa fa-heart"></i></div>
+                                    <div class="icon-wrap"><i class="text-primary icon-sm  fa fa-phone"></i></div>
                                     <div class="text-wrap text-dark">
-                                        <div>Favorites</div>
+                                        <div>Contact Us</div>
                                     </div>
                                 </div>
                             </a>

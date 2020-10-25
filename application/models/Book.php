@@ -20,7 +20,31 @@ class Book extends CI_Model {
         return  $insertId;
     }
 
-    public function getAllBooks($searchTitle="",$searchAuthor=""){
+    public function getAllBooksCount(){
+        return $this->db->count_all('book');
+    }
+
+    public function getInStock(){
+        $this->db->select_sum('stock_quantity');
+        $result = $this->db->get('book')->row();
+        return $result->stock_quantity;
+    }
+
+    public function getTotalSales(){
+        $this->db->select_sum('total');
+        $result = $this->db->get('shopping_cart')->row();
+        return $result->total;
+    }
+
+    public function getSoldBooksCount(){
+        $this->db->select_sum('quantity');
+        $result = $this->db->get('shopping_cart')->row();
+        return $result->quantity;
+    }
+
+    public function getAllBooks($title,$author, $limit, $start){
+
+
         $this->db->select("book.id,
                             book.isbn_no,
                             book.code,
@@ -37,12 +61,21 @@ class Book extends CI_Model {
 //            $this->db->or_like('author', $search);
 //        }
         $this->db->join('category as cat', 'cat.id = book.category_id');
-        if($searchTitle != '' && $searchAuthor !='' ) {
-            $this->db->where("(title LIKE '$searchTitle' OR author LIKE '$searchAuthor')");
+        if($title != '') {
+            $this->db->like('book.title', $title);
+
+           // $this->db->where("(title LIKE '$searchTitle' OR author LIKE '$searchAuthor')");
+        }
+        if($author != '') {
+            $this->db->like('book.author', $author);
+
+            // $this->db->where("(title LIKE '$searchTitle' OR author LIKE '$searchAuthor')");
         }
         $this->db->order_by("created_at", "DESC");
+        $this->db->limit($limit, $start);
 
         $query = $this->db->get();
+
         return $query->result();
     }
     public function getBookDetail($id){
@@ -67,7 +100,7 @@ class Book extends CI_Model {
         return $query->result();
     }
 
-    public function getBooks(){
+    public function getBooks($search, $field, $limit, $start){
         $this->db->select("book.id,
                             book.isbn_no,
                             book.code,
@@ -78,12 +111,22 @@ class Book extends CI_Model {
                             book.year,
                             book.price,
                             book.stock_quantity,
+                            book.category_id,
                             cat.name,
                             image.file_path");
         $this->db->from('book');
         $this->db->join('category as cat', 'cat.id = book.category_id','left');
         $this->db->join('book_image as image', 'book.id = image.book_id','left');
 
+        if($search != '') {
+            $this->db->like('book.title', $search);
+            $this->db->or_like('book.author',$search);
+        }
+        if($field != '') {
+            $this->db->like('book.category_id', $field);
+        }
+
+        $this->db->limit($limit,$start);
         $query = $this->db->get();
         return $query->result();
     }

@@ -9,6 +9,34 @@
 include ("admin_main_view.php");
 ?>
 
+<style>
+    .center {
+        text-align: center;
+    }
+
+    .pagination , strong{
+        display: inline-block;
+    }
+
+    .pagination a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+        transition: background-color .3s;
+        border: 1px solid #ddd;
+        margin: 0 4px;
+    }
+
+    .pagination a.active {
+        background-color: #4CAF50;
+        color: white;
+        border: 1px solid #4CAF50;
+    }
+
+    .pagination a:hover:not(.active) {background-color: #ddd;}
+</style>
+
 <section id="content_body">
     <div class="container">
         <div class="row">
@@ -38,6 +66,9 @@ include ("admin_main_view.php");
                     <br>
                     <div class="col-sm-3">
                         <button class="btn btn-default pull-right" type="submit"><i class="fa fa-search"></i> Filter</button>
+                    </div>
+                    <div class="col-sm-2">
+                        <a href="<?php echo base_url(); ?>index.php/AdminController/viewBookList" class="btn btn-default pull-right" type="button"><i class="fa fa-refresh"></i> Clear</a>
                     </div>
 
                 </div>
@@ -85,8 +116,10 @@ include ("admin_main_view.php");
             </table>
 
             <br>
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-
+            <div class=" col-lg-12 center">
+                <div class="pagination">
+                    <?php echo $links; ?>
+                </div>
             </div>
             <div class="col-md-6 text-right">
 

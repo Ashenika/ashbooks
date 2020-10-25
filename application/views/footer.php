@@ -6,7 +6,7 @@
     <div class="container">
         <section class="footer-bottom row border-top-white">
             <div class="col-sm-6">
-                <p class="text-white-50"> AshBooks <br>  by Asheni Perera</p>
+                <p class="text-white-50"> AshBooks <br>  </p>
             </div>
             <div class="col-sm-6">
                 <p class="text-md-right text-white-50">

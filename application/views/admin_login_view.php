@@ -225,7 +225,7 @@
                             <h3><b>Ash Books</b></h3>
                             <p>A Reader is a complete Person</p>
                         </div>
-                            <form role="form" action="<?php echo base_url(); ?>/index.php/AdminController/authenticate" method="post">
+                            <form role="form" action="<?php echo base_url(); ?>index.php/AdminController/authenticate" method="post">
                                 <div class="form-group has-feedback">
                                     <input type="text" name="username" class="form-control" placeholder="Username"
                                            autocomplete="off" value="">
@@ -271,21 +271,6 @@
     </div>
 </div>
 
-<!--<div class="spinner text-center">-->
-<!--    <div class="outer">-->
-<!--        <div class="middle">-->
-<!--            <div class="inner text-center">-->
-<!--                <div class="sk-folding-cube">-->
-<!--                    <div class="sk-cube1 sk-cube"></div>-->
-<!--                    <div class="sk-cube2 sk-cube"></div>-->
-<!--                    <div class="sk-cube4 sk-cube"></div>-->
-<!--                    <div class="sk-cube3 sk-cube"></div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!---->
-<!--</div>-->
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
@@ -294,8 +279,6 @@
 <script type="text/javascript">
 
     $(window).load(function(){
-        // PAGE IS FULLY LOADED
-        // FADE OUT YOUR OVERLAYING DIV
         $('.spinner').fadeOut();
     });
 </script>

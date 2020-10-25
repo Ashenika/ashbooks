@@ -36,13 +36,12 @@ class AdminController extends CI_Controller{
         $this->load->model('book');
         $this->load->model('bookImage');
         $this->load->helper(array('form', 'url'));
+        $this->load->library('form_validation');
+        $this->load->library('pagination');
     }
 
     public function index()
     {
-//        if ($this->session->userdata('user_id')) {
-//            redirect(base_url().'index.php/AdminController/index','refresh');
-//        }
         $this->load->view('admin_login_view');
     }
 
@@ -50,8 +49,7 @@ class AdminController extends CI_Controller{
     {
         $username = $this->input->post('username');
         $password = $this->input->post('password');
-        $user = $this->auth_lib->login($username,$password);
-       // $this->session->set_userdata('user_id', $user);
+        $user     = $this->auth_lib->login($username,$password);
 
         if ($user !== false) {
             $this->load->view('admin_main_view');
@@ -61,6 +59,16 @@ class AdminController extends CI_Controller{
             $this->load->view('admin_login_view',$data);
         }
 
+    }
+
+    public function dashboard(){
+        $data['book_count'] = $this->book->getAllBooksCount();
+        $data['in_stock']   = $this->book->getInStock();
+        $data['total_sales']= $this->book->getTotalSales();
+        $data['sold_books'] = $this->book->getSoldBooksCount();
+        $data['top_books']  = $this->book->getTopViewedBooks(1);
+
+        $this->load->view('admin_dashboard',$data);
     }
 
     public function addCategoryView(){
@@ -74,78 +82,119 @@ class AdminController extends CI_Controller{
 
     public function viewBookList(){
         // Search text
-        $title = $this->input->post('author');
-        $author= $this->input->post('title');
+        $title = $this->input->get('title');
+        $author= $this->input->get('author');
+
+        $config                 = array();
+        $config["base_url"]     = base_url() . "index.php/AdminController/viewBookList";
+        $config["total_rows"]   = $this->book->getAllBooksCount();
+        $config["per_page"]     = 10;
+        $config["uri_segment"]  = 3;
+        $config['first_link']   = 'First Page';
+        $config['last_link']    = 'Last Page';
+        $config['cur_tag_open'] = '<a class="active">';
+        $config['cur_tag_close'] = '</a>';
+
+        $this->pagination->initialize($config);
+
+        $page           = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+
+        $data["links"]  = $this->pagination->create_links();
+
+        $data['books']  = $this->data['books'] = $this->book->getAllBooks($title,$author,$config["per_page"], $page);
 
         $categories['category'] = $this->category->getBookCategories();
-        $book = $this->data['books'] = $this->book->getAllBooks($title,$author); // calling Post model method getPosts()
-        $data=array($categories,$book);
-       // print_r(json_encode($this->data));
-        $this->load->view('admin_book_list', $this->data); // load the view file , we are passing $data array to view file
-       // $this->load->view('admin_book_list',$data);
+        $this->load->view('admin_book_list', $data); // load the view file , we are passing $data array to view file
+
     }
 
     public function viewBookDetail($id){
         $this->data['details'] = $this->book->getBookDetail($id);
-        //print_r(json_encode($this->data));
         $this->load->view('admin_book_detail_view',$this->data);
     }
 
     public function addCategory(){
-        //Setting values for tabel columns
-        $data = array(
-            'name' => $this->input->post('category')
-        );
-        //Transfering data to Model
-        $this->category->insert_category($data);
-        $data['message'] = 'Data Inserted Successfully';
-        //Loading View
-        $this->load->view('admin_add_category', $data);
+
+        $this->form_validation->set_rules('category', 'Category', 'required');
+
+        if ($this->form_validation->run() == TRUE)
+        {
+            //Setting values for tabel columns
+            $data = array(
+                'name' => $this->input->post('category')
+            );
+            //Transfering data to Model
+            $this->category->insert_category($data);
+            $data['message'] = 'Data Inserted Successfully';
+            //Loading View
+            $this->load->view('admin_add_category', $data);
+        }else{
+            $this->load->view('admin_add_category');
+        }
+
+
     }
 
     public function addBook(){
 
-        /*FORM DATA*/
-          $data = array(
-            'isbn_no'        => $this->input->post('isbn'),
-            'code'           => $this->input->post('isbn'),
-            'title'          => $this->input->post('title'),
-            'author'         => $this->input->post('author'),
-            'description'    => $this->input->post('description'),
-            'publisher_name' => $this->input->post('publisher'),
-            'year'           => $this->input->post('year'),
-            'price'          => $this->input->post('price'),
-            'category_id'    => $this->input->post('category'),
-            'stock_quantity' => $this->input->post('stockQty'),
-            'created_at'     => date("YmdHis")
-        );
-        $book = $this->book->insertBook($data);
+        $this->form_validation->set_rules('isbn', 'ISBN', 'required');
+        $this->form_validation->set_rules('title', 'Title', 'required');
+        $this->form_validation->set_rules('author', 'Author', 'required');
+        $this->form_validation->set_rules('price', 'Price', 'required');
+        $this->form_validation->set_rules('category', 'Category', 'required');
+        $this->form_validation->set_rules('stockQty', 'Stock Qty', 'required');
+        $this->form_validation->set_rules('images', 'Image', 'required');
 
-
-
-        if (!empty($_FILES['images']['name'][0])) {
-
-            if ($this->upload_files($this->input->post('title'),$_FILES['images']) === FALSE) {
-                //if Errors
-                $data['error'] = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
-
-            }
-            $filePath= $this->upload->data('file_path');
-            $file_ext = $this->upload->data('file_ext');
-            $file_name = $this->upload->data('file_name');
-            /*IMAGE DATA*/
-            $file = array(
-                'file_path' => $filePath.$file_name,
-                'file_ext'  => $file_ext,
-                'book_id'   => $book,
-                'created_at'=> date("YmdHis")
+        if ($this->form_validation->run() == TRUE) {
+            /*FORM DATA*/
+            $data = array(
+                'isbn_no'        => $this->input->post('isbn'),
+                'code'           => $this->input->post('isbn'),
+                'title'          => $this->input->post('title'),
+                'author'         => $this->input->post('author'),
+                'description'    => $this->input->post('description'),
+                'publisher_name' => $this->input->post('publisher'),
+                'year'           => $this->input->post('year'),
+                'price'          => $this->input->post('price'),
+                'category_id'    => $this->input->post('category'),
+                'stock_quantity' => $this->input->post('stockQty'),
+                'created_at'     => date("YmdHis")
             );
-            $this->bookImage->insertBookImage($file);
+
+
+            $book = $this->book->insertBook($data);
+
+
+
+            if (!empty($_FILES['images']['name'][0])) {
+
+                if ($this->upload_files($this->input->post('title'),$_FILES['images']) === FALSE) {
+                    //if Errors
+                    $data['error'] = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+
+                }
+                $filePath= $this->upload->data('file_path');
+                $file_ext = $this->upload->data('file_ext');
+                $file_name = $this->upload->data('file_name');
+                /*IMAGE DATA*/
+                $file = array(
+                    'file_path' => $filePath.$file_name,
+                    'file_ext'  => $file_ext,
+                    'book_id'   => $book,
+                    'created_at'=> date("YmdHis")
+                );
+                $this->bookImage->insertBookImage($file);
+            }
+
+            $data['message'] = 'Data Inserted Successfully';
+            //Loading View
+            redirect('AdminController/addBookView', 'refresh');
+        }else{
+            $data['category'] = $this->category->getBookCategories();
+            $this->load->view('admin_add_book',$data);
         }
 
-        $data['message'] = 'Data Inserted Successfully';
-        //Loading View
-       redirect('AdminController/addBookView', 'refresh');
+
     }
 
    private function upload_files( $title, $files)
@@ -184,5 +233,16 @@ class AdminController extends CI_Controller{
         return $images;
     }
 
+    function logout()
+    {
+        $user_data = $this->session->all_userdata();
+        foreach ($user_data as $key => $value) {
+            if ($key != 'session_id' && $key != 'ip_address' && $key != 'user_agent' && $key != 'last_activity') {
+                $this->session->unset_userdata($key);
+            }
+        }
+        $this->session->sess_destroy();
+        redirect('AdminController/index','refresh');
+    }
 }
 

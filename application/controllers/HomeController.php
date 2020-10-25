@@ -31,13 +31,15 @@ class HomeController extends CI_Controller {
         $this->load->library('auth_lib');
         $this->load->library('session');
         $this->load->library('pagination');
+        $this->load->library('email');
+        $this->load->library('form_validation');
         $this->load->helper('url');
         $this->load->helper('form');
+        $this->load->helper(array('form', 'url'));
         $this->load->model('category');
         $this->load->model('admin');
         $this->load->model('book');
         $this->load->model('bookImage');
-        $this->load->helper(array('form', 'url'));
     }
 
     public function index(){
@@ -46,9 +48,7 @@ class HomeController extends CI_Controller {
         if(!isset($_SESSION['id'])){
             $_SESSION['id']=uniqid();
         }
-       // echo $_SESSION['id'];
-       // $uid = uniqid();
-       // print_r($_SESSION['id']);
+
         $this->load->view('home_view',$this->data);
     }
 
@@ -58,40 +58,94 @@ class HomeController extends CI_Controller {
     }
 
     public function viewAllByCategory($category_id){
-       // $config['base_url'] = base_url() . 'index.php/HomeController/viewAllByCategory/'.$category_id;
-       // $config['total_rows'] = $this->category->record_count();;
-        //$config['per_page'] = 12;
-       // $config["uri_segment"] = 3;
-        $config = array();
-        $config["base_url"] = base_url() . 'index.php/HomeController/viewAllByCategory/'.$category_id;
-        $total_row = $this->category->record_count();
-        $config["total_rows"] = $total_row;
-        $config["per_page"] = 12;
-        $config['use_page_numbers'] = TRUE;
-        $config['num_links'] = $total_row;
-        $config['cur_tag_open'] = '&nbsp;<a class="current">';
+
+        $config                 = array();
+        $config["base_url"]     = base_url() . 'index.php/HomeController/viewAllByCategory/'.$category_id;
+        $config["total_rows"]   = $this->category->getAllBooksCategoryCount($category_id);
+        $config["per_page"]     = 10;
+        $config["uri_segment"]  = 2;
+        $config['first_link']   = 'First Page';
+        $config['last_link']    = 'Last Page';
+        $config['cur_tag_open'] = '<a class="active">';
         $config['cur_tag_close'] = '</a>';
-        $config['next_link'] = '>';
-        $config['prev_link'] = '<';
 
 
         $this->pagination->initialize($config);
-        if($this->uri->segment(3)){
-            $page = ($this->uri->segment(3)) ;
-        }
-        else{
-            $page = 1;
-        }
+        $page = ($this->uri->segment(2)) ? $this->uri->segment(2) : 0;
 
         // build paging links
         $data['details'] = $this->category->getAllBooksByCategory($category_id,$config["per_page"], $page);
-       // print_r(json_encode($data));
 
-      //  return;
-        $params          = $this->pagination->create_links();
-        $data["links"]   = explode('&nbsp;',$params );
+        $data["links"] = $this->pagination->create_links();
 
         $this->load->view('all_books_category_view',$data);
+    }
+
+    public function contact(){
+        $this->load->view('contact_us_view');
+    }
+
+    public function sendEmail(){
+
+        /* ****** // Go to your gmail account -> go to security tab -> allow access to less secure apps // ******/
+
+        $this->form_validation->set_rules('email', 'Email', 'required');
+        $this->form_validation->set_rules('phone', 'Phone', 'required');
+
+        $email_address = $this->input->post('email');
+        $my_email      = "youemail@gmail.com";
+        if ($this->form_validation->run() == TRUE) {
+            $config = Array(
+                'protocol' => 'smtp',
+                'smtp_host' => 'ssl://smtp.googlemail.com',
+                'smtp_port' => 465,
+                'smtp_user' => 'YOUR EMAIL ADDRESS',
+                'smtp_pass' => 'YOUR EMAIL ADDRESS PASSWORD', // Go to your gmail account -> go to security tab -> allow access to less secure apps
+                'mailtype' => 'html',
+                'charset' => 'iso-8859-1',
+                'wordwrap' => TRUE
+            );
+
+            $this->email->initialize($config);
+
+
+            $this->email->set_newline("\r\n");
+            $this->email->from($my_email);
+            $this->email->to($email_address);
+            $this->email->subject('AshBooks');
+            $this->email->message("Thanks for Contacting Us");
+            if ($this->email->send()) {
+                $this->session->set_flashdata("email_sent", "Email sent successfully.");
+            } else {
+                show_error($this->email->print_debugger());
+            }
+        }
+
+       // $this->sendSMS(); // Uncomment This method after you config the sms gateway
+
+        redirect('HomeController/contact','refresh');
+    }
+
+    public function sendSMS(){
+
+
+        $username = 'username';//create a sms gateway, and use the credentials
+        $password = 'password';
+        $to = $this->input->post('phone');
+        $from = 'AshCakes';
+        $message = 'Thanks For Contacting Us';
+        $url = base_url().$username."&password=".$password."&to=".$to."&from=".urlencode($from)."&message=".urlencode($message)."";
+
+        //Curl Start
+        $ch  =  curl_init();
+        $timeout  =  30;
+        curl_setopt ($ch,CURLOPT_URL, $url) ;
+        curl_setopt ($ch,CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt ($ch,CURLOPT_CONNECTTIMEOUT, $timeout) ;
+        $response = curl_exec($ch) ;
+        curl_close($ch) ;
+        //Write out the response
+        echo $response ;
     }
 
 }

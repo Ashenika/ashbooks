@@ -48,17 +48,26 @@ class Category extends CI_Model {
         return $query->result();
     }
 
-    public function getAllBooksByCategory($category_id,$limit){
+    public function getAllBooksByCategory($category_id,$limit,$start){
 
-        $this->db->limit($limit);
+
         $this->db->select('*')
              ->from('book')
              ->join('category', 'category.id= book.category_id')
              ->join('book_image', 'book_image.book_id= book.id');
         $this->db->where('category_id', $category_id);
+        $this->db->limit($limit,$start);
         $query = $this->db->get();
         return $query->result();
 
+    }
+
+    public function getAllBooksCategoryCount($category_id){
+        $this->db->select('*')
+            ->from('book')
+            ->join('category', 'category.id= book.category_id');
+        $this->db->where('category_id', $category_id);
+        return $this->db->count_all_results();;
     }
 
     // Count all record in database.

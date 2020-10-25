@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0.1
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 30, 2019 at 06:36 AM
--- Server version: 10.1.32-MariaDB
--- PHP Version: 7.1.17
+-- Generation Time: Oct 25, 2020 at 10:29 AM
+-- Server version: 10.4.13-MariaDB
+-- PHP Version: 7.4.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -54,7 +53,7 @@ CREATE TABLE `book` (
   `code` varchar(50) DEFAULT NULL,
   `title` varchar(50) DEFAULT NULL,
   `author` varchar(50) DEFAULT NULL,
-  `description` longtext,
+  `description` longtext DEFAULT NULL,
   `publisher_name` varchar(50) DEFAULT NULL,
   `year` year(4) DEFAULT NULL,
   `price` decimal(10,0) DEFAULT NULL,
@@ -100,9 +99,7 @@ INSERT INTO `book` (`id`, `isbn_no`, `code`, `title`, `author`, `description`, `
 (28, 'ISBN13: 9754375875623', 'ISBN13: 9754375875623', 'Twilight Saga - Breaking Dawn', 'Stephenie Meyer', 'To be irrevocably in love with a vampire is both fantasy and nightmare woven into a dangerously heightened reality for Bella Swan. Pulled in one direction by her intense passion for Edward Cullen, and in another by her profound connection to werewolf Jacob Black, she has endured a tumultuous year of temptation, loss and strife to reach the ultimate turning point. Her imminent choice to either join the dark but seductive world of immortals or pursue a fully human life has become the thread from which the fate ', 'Kindle Edition', 2008, '2560', 3, 20, '2018-11-09 11:12:57', NULL, NULL),
 (30, 'ISBN13: 975435675623', 'ISBN13: 975435675623', 'Evermore The Immortals', ' Alyson Noel', 'After a horrible accident claimed the lives of her family, sixteen-year-old Ever Bloom can see people\'s auras, hear their thoughts, and know someone\'s entire life story by touching them. Going out of her way to avoid human contact and suppress her abilities, she has been branded a freak at her new high school?but everything changes when she meets Damen Auguste.', 'Kindle Edition', 2009, '2580', 3, 20, '2018-11-09 11:19:33', NULL, NULL),
 (31, 'ISBN13: 954675885623', 'ISBN13: 954675885623', 'Wind Rider Tales of a New World', 'P. C. Cast', ' New York Times bestselling author of the House of Night series, P.C. Cast, brings us Wind Rider, an epic fantasy set in a world where humans, their animal allies, and the earth itself has been drastically changed. A world filled with beauty and danger and cruelty…  Mari, Nik, and their newly formed Pack are being hunted. Thaddeus and the God of Death will stop at nothing until they are obliterated from the earth. But Mari and Nik have one goal: to reach the plains of the Wind Riders, in order to band together to stop Thaddeus from destroying all that Mari and Nik hold dear.', 'Hardcover – Deckle Edge', 2018, '2680', 3, 20, '2018-11-09 11:22:15', NULL, NULL),
-(32, 'fiefb6879', 'fiefb6879', 'The Journey Book', 'Aaron Becker', 'Follow a girl on an elaborate flight of fancy in a wondrously illustrated, wordless picture book about self-determination -- and unexpected friendship.', 'Candlewick Press', 2013, '80', 9, 50, '2019-01-26 19:12:17', NULL, NULL),
-(33, '', '', '', '', '', '', 0000, '0', 11, 0, '2019-01-28 16:41:29', NULL, NULL),
-(34, '4513166', '4513166', 'hdike', 'reg', 'greg', 'greg', 2019, '50', 11, 18, '2019-01-28 16:42:32', NULL, NULL);
+(32, 'fiefb6879', 'fiefb6879', 'The Journey Book', 'Aaron Becker', 'Follow a girl on an elaborate flight of fancy in a wondrously illustrated, wordless picture book about self-determination -- and unexpected friendship.', 'Candlewick Press', 2013, '80', 9, 50, '2019-01-26 19:12:17', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -113,7 +110,7 @@ INSERT INTO `book` (`id`, `isbn_no`, `code`, `title`, `author`, `description`, `
 CREATE TABLE `book_image` (
   `id` int(11) NOT NULL,
   `book_id` int(11) DEFAULT NULL,
-  `file_path` text,
+  `file_path` text DEFAULT NULL,
   `file_ext` varchar(50) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
@@ -198,7 +195,6 @@ INSERT INTO `category` (`id`, `name`, `category_created_at`, `updated_at`) VALUE
 (7, 'Language', '2018-11-07 10:08:55', '2018-11-07 10:08:26'),
 (8, 'Kids', '2018-11-07 10:08:57', '2018-11-07 10:08:27'),
 (9, 'Journey', NULL, NULL),
-(10, '', NULL, NULL),
 (11, 'Fanfictions', NULL, NULL);
 
 -- --------------------------------------------------------
@@ -253,7 +249,10 @@ INSERT INTO `logins` (`id`, `session_id`, `name`, `timestamp`) VALUES
 (18, 'lq7kfmbhus16up56f39jk0h0jvevac6q', 'admin', NULL),
 (19, '72c0k8skip5d5g417185gherajnjjb4h', 'admin', NULL),
 (20, 'm0aersl8qu2155b89qj2m1ejuug87f09', 'admin', NULL),
-(21, 'mt4uqgioccajjhg8d08m2ib9np5rcht5', 'admin', NULL);
+(21, 'mt4uqgioccajjhg8d08m2ib9np5rcht5', 'admin', NULL),
+(22, 'fsdje5k64r5l5pub96s0uoh0s483auu7', 'admin', NULL),
+(23, 'fsdje5k64r5l5pub96s0uoh0s483auu7', 'admin', NULL),
+(24, 'mlafvekrcq7t1jmbnfdutn7hoabc2v1u', 'admin', NULL);
 
 -- --------------------------------------------------------
 
@@ -298,7 +297,10 @@ INSERT INTO `shopping_cart` (`id`, `user_id`, `book_id`, `quantity`, `session_id
 (30, 't982iheihsi6om6l6ogg1d0i51b4lpn3', 18, 1, '6f4922f45568161a8cdf4ad2299f6d23', '850', '2019-01-28 00:11:48'),
 (32, 't982iheihsi6om6l6ogg1d0i51b4lpn3', 24, 1, '1ff1de774005f8da13f42943881c655f', '1500', '2019-01-28 00:11:49'),
 (36, 'a6klnbhvo4sqvlqopdata5sf56rcm4i2', 8, 5, 'c9f0f895fb98ab9159f51fd0297e236d', '2250', '2019-01-28 11:08:50'),
-(37, 'a6klnbhvo4sqvlqopdata5sf56rcm4i2', 8, 5, 'c9f0f895fb98ab9159f51fd0297e236d', '2250', '2019-01-28 11:09:06');
+(37, 'a6klnbhvo4sqvlqopdata5sf56rcm4i2', 8, 5, 'c9f0f895fb98ab9159f51fd0297e236d', '2250', '2019-01-28 11:09:06'),
+(38, '2lrsngv83f3a5g6t7tb4c8q0he7oi5vj', 1, 2, 'c4ca4238a0b923820dcc509a6f75849b', '1380', '2020-10-24 03:45:42'),
+(39, 'mlafvekrcq7t1jmbnfdutn7hoabc2v1u', 4, 2, 'a87ff679a2f3e71d9181a67b7542122c', '5000', '2020-10-24 11:27:52'),
+(40, 'g1ab3gegbe8klti09cckvb065lpqa7a4', 1, 1, 'c4ca4238a0b923820dcc509a6f75849b', '690', '2020-10-24 11:35:24');
 
 -- --------------------------------------------------------
 
@@ -412,7 +414,12 @@ INSERT INTO `user` (`id`, `unique_user_id`, `book_id`, `timestamp`) VALUES
 (132, '5c4efb2d988af', 16, '2019-01-28 09:26:57'),
 (133, '5c4efb2d988af', 16, '2019-01-28 11:07:29'),
 (134, '5c4efcf099f44', 8, '2019-01-28 11:08:09'),
-(135, '5c4efcf099f44', 6, '2019-01-28 11:09:02');
+(135, '5c4efcf099f44', 6, '2019-01-28 11:09:02'),
+(136, '5f93aa3edebd9', 1, '2020-10-24 03:44:20'),
+(137, '5f93aa3edebd9', 1, '2020-10-24 03:45:21'),
+(138, '5f93aa3edebd9', 1, '2020-10-24 03:45:32'),
+(139, '5f93aa3edebd9', 15, '2020-10-24 04:01:32'),
+(140, '5f944093b0437', 4, '2020-10-24 11:27:23');
 
 --
 -- Indexes for dumped tables
@@ -511,19 +518,19 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `logins`
 --
 ALTER TABLE `logins`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `shopping_cart`
 --
 ALTER TABLE `shopping_cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=136;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=141;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

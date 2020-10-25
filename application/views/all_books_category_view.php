@@ -10,6 +10,31 @@ include("index_view.php");
 include ("header.php");
 ?>
 
+<style>
+    .pagination , strong{
+        display: inline-block;
+        text-align: center;
+    }
+
+    .pagination a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+        transition: background-color .3s;
+        border: 1px solid #ddd;
+        margin: 0 4px;
+    }
+
+    .pagination a.active {
+        background-color: #4CAF50;
+        color: white;
+        border: 1px solid #4CAF50;
+    }
+
+    .pagination a:hover:not(.active) {background-color: #ddd;}
+</style>
+
     <!-- ========================= SECTION ITEMS ========================= -->
     <section class="section-request bg padding-y-sm">
         <div class="container">
@@ -38,13 +63,9 @@ include ("header.php");
                 <?php } ?>
             </div> <!-- row.// -->
             <div class="col-md-6 text-right">
-                <ul class="tsc_pagination">
-
-                    <!-- Show pagination links -->
-                    <?php foreach ($links as $link) {
-                        echo "<span class='price-new'>". $link."</span>";
-                    } ?>
-                </ul>
+                <div class="pagination">
+                   <span class='price-new'> <?php echo $links; ?> </span>
+                </div>
             </div>
 
         </div><!-- container // -->

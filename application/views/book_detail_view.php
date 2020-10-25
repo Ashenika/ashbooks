@@ -111,7 +111,7 @@ include ("header.php");
                                         <dl class="dlist-inline">
                                             <dt>Quantity: </dt>
                                             <dd>
-                                                <input type="number" name="quantity" id="quantity"   class="quantity form-control">
+                                                <input type="number" name="quantity" id="quantity"  value="1"  class="quantity form-control">
                                             </dd>
                                         </dl>  <!-- item-property .// -->
                                     </div> <!-- col.// -->

@@ -9,6 +9,35 @@
 include("index_view.php");
 include ("header.php");
 ?>
+
+<style>
+    .center {
+        text-align: center;
+    }
+
+    .pagination , strong{
+        display: inline-block;
+    }
+
+    .pagination a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+        transition: background-color .3s;
+        border: 1px solid #ddd;
+        margin: 0 4px;
+    }
+
+    .pagination a.active {
+        background-color: #4CAF50;
+        color: white;
+        border: 1px solid #4CAF50;
+    }
+
+    .pagination a:hover:not(.active) {background-color: #ddd;}
+</style>
+
     <script type="text/javascript">
         function myFunction() {
 
@@ -40,18 +69,19 @@ include ("header.php");
     </script>
 
     <div class="col-lg-12-24 col-sm-10 center">
-        <form action="<?php echo base_url() . 'index.php/ItemsListController/viewAllBooks'; ?>" method="get" class="py-1">
+        <form  method="get" class="py-1">
             <div class="input-group w-100">
                 <select id="category" name="category" class="form-control">
-                    <?php foreach($category as $key=>$value):?>
+                    <?php foreach($categories as $key=>$value):?>
                         <option value="<?php echo $key?>"><?php echo $value?></option>
                     <?php endforeach;?>
                 </select>
-                <input type="text" class="form-control" style="width:50%;" placeholder="Search">
+                <input type="text" name="search" class="form-control" style="width:50%;" placeholder="Search">
                 <div class="input-group-append">
                     <button class="btn btn-primary" type="submit">
                         <i class="fa fa-search"></i> Search
                     </button>
+                        <a href="<?php echo base_url(); ?>index.php/ItemsListController/viewAllBooks" class="btn btn-success pull-right" type="button"><i class="fa fa-refresh" ></i> Clear</a>
                 </div>
             </div>
         </form> <!-- search-wrap .end// -->
@@ -65,7 +95,7 @@ include ("header.php");
         </header>
 
         <div class="row-sm">
-            <?php foreach($details as $key=>$value){?>
+            <?php foreach($books as $key=>$value){?>
                 <div class="col-md-2">
                     <figure class="card card-product">
                         <div class="img-wrap"> <img src="<?php echo base_url(); ?><?php echo $value->file_path;?>"></div>
@@ -87,13 +117,9 @@ include ("header.php");
         </div> <!-- row.// -->
         <br>
         <div class="col-md-6 text-right">
-            <ul class="tsc_pagination">
-
-                <!-- Show pagination links -->
-                <?php foreach ($links as $link) {
-                    echo "<span class='price-new'>". $link."</span>";
-                } ?>
-            </ul>
+            <div class="pagination">
+                <?php echo $links; ?>
+            </div>
         </div>
 
 
